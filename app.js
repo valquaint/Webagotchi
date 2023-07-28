@@ -81,18 +81,12 @@ liveReloadServer.watch(path.join(__dirname, './public'));
 
 const app = express();
 
-const findPort = process.argv.find((arg) => {
-    if(arg.match(/-p:\d/gi)){
-        return true
-    }
-})?.replace(/-p:/gi,"") || config?.port || 4242
-
-
-
 app.use(connectLivereload());
 app.use(bodyParser.json());
 
 app.use("/", express.static(path.resolve(path.join(__dirname, "./public"))))
+
+const findPort = ENVIRONMENT.PORT || config?.port || 4242;
 
 app.listen(findPort, console.log(`Webagotchi is live at http://localhost:${findPort}`));
 
