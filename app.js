@@ -11,6 +11,55 @@ try{
     console.warn("Config file is not properly formatted. Unable to load config. Please check that it is valid JSON.");
 }
 
+const ENVIRONMENT = ( () => {
+    const args = {
+        PORT: 4242,
+        DEBUG: false
+    };
+    const regE = new RegExp(/\1(-{2}[A-z]*[\w\S]*)|\2(-{1}[A-z]{1})|\3(-{2}[A-z]*)/,"i");
+    console.log(process.argv);
+    let currentFlag = {
+        flag: "",
+        processed: false
+    };
+    for(const arg of process.argv){
+        //console.log(`Testing ${arg}`)
+        const regExec = regE.exec(arg) ? regE.exec(arg)[0].replaceAll("-","") : null;
+        console.log(`REGEX TESTS: ${regExec}`);
+        if(regExec && currentFlag.processed){
+            currentFlag.flag = regExec;
+        } else if(regExec) {
+                Object.keys(args).forEach((k, v) => {
+                    if(currentFlag.flag.toUpperCase() === k || currentFlag.flag.toUpperCase() === k.substring(0,1)){
+                        args[k] = true;
+                    }
+                })
+                
+            currentFlag.flag = regExec;
+        }
+        else{
+            Object.keys(args).forEach((k, v) => {
+                if(currentFlag.flag.toUpperCase() === k || currentFlag.flag.toUpperCase() === k.substring(0,1)){
+                    switch(typeof args[k]){
+                        case "number":
+                            args[k] = parseInt(arg);
+                            break;
+                        case "boolean":
+                            args[k] = arg === "true" ? true : false;
+                            break;
+                        case "string":
+                        default:
+                            args[k] = arg;
+                            break;
+                    }
+                }
+            })
+        }
+    }
+    return args
+})();
+
+console.log(ENVIRONMENT)
 const mainTransport = new winston.transports.Console({
     format: winston.format.combine(
         winston.format.colorize({
