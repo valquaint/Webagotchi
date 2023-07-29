@@ -1,4 +1,7 @@
-class viewport extends Component {
+class Button extends Component {
+    onClick;
+    text;
+    affects;
     constructor(props){
         super(props);
         if (props) {
@@ -7,5 +10,9 @@ class viewport extends Component {
                 console.log(`Setting ${prop} to ${props[prop]}`);
             })
         }
+        this.innerHTML = this.text;
+        this.addEventListener("click", () => {
+            this.onClick(this.affects)
+        })
     }
 }

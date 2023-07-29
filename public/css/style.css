@@ -1,0 +1,179 @@
+body {
+    display: flex;
+    justify-content: center;
+}
+viewport {
+    border: 2px solid black;
+    width: 98vw;
+    height: 98vh;
+    max-height: 600px;
+    max-width: 700px;
+    display: flex;
+    overflow: hidden;
+    justify-content: space-between;
+}
+
+#btn_menu {
+    height: 64px;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    right: 0px;
+}
+#btn_menu.open{
+    transform: translate(-120px);
+}
+
+.menucontainer {
+    display: flex;
+    justify-content: center;
+    width: 184px;
+    max-width: 184px;
+    position: relative;
+    right: -120px;
+}
+
+.menu { 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+    height: 200px;
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    right: 0px;
+}
+
+.menucontainer.open{
+    transform: translate(-120px);
+}
+@keyframes menu-open {
+    0% {
+        transform: translate(0%);
+    }
+
+    100% { 
+        transform: translate(-120px);
+    }
+}
+
+@keyframes menu-close {
+    0% {
+        transform: translate(-120px);
+    }
+
+    100% { 
+        transform: translate(0%);
+    }
+}
+.menu > *{ 
+    border: 2px solid green;
+    max-width: 120px;
+    min-width: 120px;
+}
+
+#weather {
+    border: 2px solid red;
+    height: 2em;
+    max-width: 150px;
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#weather label {
+    color: #595959;
+    font-size: 1.2em;
+    vertical-align: top;
+    font-family:monospace;
+    font-weight: 700;
+}
+
+#weather img {
+    aspect-ratio: 1 / 1;
+    width: 1.98em;
+    object-fit: contain;
+}
+
+#weather .speed {
+    font-size: 1.3em;
+}
+
+#lbl_wind {
+    font-size: 1.9em !important;
+    font-weight: 900 !important;
+}
+
+.wind.NNW {
+    transform: rotate(-22.5deg);
+}
+
+.wind.NW {
+    transform: rotate(-45deg);
+} 
+
+.wind.WNW {
+    transform: rotate(-67.5deg);
+} 
+
+.wind.W {
+    transform: rotate(-90deg);
+} 
+
+.wind.WSW {
+    transform: rotate(-112.5deg);
+} 
+
+.wind.SW {
+    transform: rotate(-135deg);
+} 
+
+.wind.WSW {
+    transform: rotate(-157.5deg);
+} 
+
+.wind.S {
+    transform: rotate(180deg);
+} 
+
+.wind.SSE {
+    transform: rotate(22.5Neg);
+}
+
+.wind.SE {
+    transform: rotate(45deg);
+} 
+
+.wind.ESE {
+    transform: rotate(67.5deg);
+} 
+
+.wind.E {
+    transform: rotate(90deg);
+} 
+
+.wind.ENE {
+    transform: rotate(112.5deg);
+} 
+
+.wind.NE {
+    transform: rotate(135deg);
+} 
+
+.wind.NNE {
+    transform: rotate(157.5deg);
+} 
+#Stats {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 300px;
+    width: 100%;
+}
+
+#Stats meter {
+    float: right;
+    z-index: 1;
+}
+

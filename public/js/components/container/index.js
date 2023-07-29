@@ -1,4 +1,4 @@
-class viewport extends Component {
+class Container extends Component {
     constructor(props){
         super(props);
         if (props) {
@@ -7,5 +7,6 @@ class viewport extends Component {
                 console.log(`Setting ${prop} to ${props[prop]}`);
             })
         }
+        
     }
 }

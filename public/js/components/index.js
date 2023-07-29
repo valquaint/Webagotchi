@@ -12,13 +12,19 @@ class Component {
             })
         }
         this.htmlElement = this.createHTMLElement(this.constructor.name);
+        if(this.children){
+            for(const child of this.children){
+                this.htmlElement.appendChild(child);
+            }
+        }
         return this.htmlElement;
     }
 
     createHTMLElement(name){
         const ele = document.createElement(name);
         ele.id = this.id;
-        ele.classList.add(this.style);
+        const style = typeof this.style === "string" ? [this.style] : this.style
+        ele.classList.add(...style);
         return ele;
     }
 }
