@@ -1,14 +1,40 @@
 let root;
 document.addEventListener("DOMContentLoaded", initialize);
 
-async function initialize(){
+async function initialize() {
     root = document.querySelector("#root");
-    root.replaceWith(new viewport({id: "root", style:"viewport"}));
+    root.replaceWith(new viewport({ id: "root", style: "viewport" }));
     root = document.querySelector("#root");
-    const testMenu1 = document.createElement("h4");
-    const testMenu2 = document.createElement("h4");
-    const testMenu3 = document.createElement("h4");
-    const testMenu4 = document.createElement("h4");
+    const Geolocation = await new Geolocate();
+    console.log(Geolocation)
+    const location = Geolocation.getLocation();
+    console.log(location);
+    const Forecast = await new Weather(location);
+    // console.log(await Forecast.getForecast())
+    await Forecast.update();
+    const disp_weather = new WeatherDisplay({
+        id: "weather", text: `Pending...`, style: "weather", bindFunction: () => {
+            return Forecast.current;
+        }
+    });
+    root.appendChild(disp_weather);
+    const Hunger = [
+        new Label({ id: "lbl_hunger", text: `Hunger`, style: "hunger", isfor: "bar_hunger" }),
+        new Meter({ bindFunction: testTheMeter, id: "bar_hunger", style: ["meter", "hunger"] })
+    ]
+
+    const Happiness = [
+        new Label({ id: "lbl_happiness", text: `Happiness`, style: "happiness", isfor: "bar_happiness" }),
+        new Meter({ bindFunction: testTheMeter, id: "bar_happiness", style: ["meter", "happiness"] })
+    ]
+
+    root.appendChild(new StatPanel({ panelItems: [Hunger, Happiness], style: "statpanel" }))
+    const menuContainer = document.createElement("div");
+    menuContainer.classList.add("menucontainer");
+    const testMenu1 = document.createElement("div");
+    const testMenu2 = document.createElement("div");
+    const testMenu3 = document.createElement("div");
+    const testMenu4 = document.createElement("div");
     testMenu1.innerHTML = "Test Menu Item";
     testMenu2.innerHTML = "Test Menu Item";
     testMenu3.innerHTML = "Test Menu Item";
@@ -19,45 +45,31 @@ async function initialize(){
         testMenu3,
         testMenu4
     ]
-    const mainMenu = new Menu({menuItems: MenuItems, style:"menu"});
-    root.appendChild(mainMenu);
-    const Geolocation = await new Geolocate();
-    console.log(Geolocation)
-    const location = Geolocation.getLocation();
-    console.log(location);
-    const Forecast = await new Weather(location);
-    // console.log(await Forecast.getForecast())
-    await Forecast.update();
-    const disp_weather = new WeatherDisplay({id: "weather", text: `Pending...`, style: "weather", bindFunction: () => {
-        return Forecast.current;
-    }});
-    root.appendChild(disp_weather);
-    const Hunger = [
-        new Label({id: "lbl_hunger", text: `Hunger`, style: "hunger", isfor:"bar_hunger"}),
-        new Meter({bindFunction: testTheMeter, id: "bar_hunger", style: ["meter","hunger"]})
-    ] 
-
-    const Happiness = [
-        new Label({id: "lbl_happiness", text: `Happiness`, style: "happiness", isfor:"bar_happiness"}),
-        new Meter({bindFunction: testTheMeter, id: "bar_happiness", style: ["meter","happiness"]})
-    ] 
-
-    root.appendChild(new StatPanel({panelItems: [Hunger, Happiness], style:"statpanel"}))
-    root.appendChild(new Button({id:"btn_menu", onClick: () => {
-        if(mainMenu.classList.contains("open")=== false){
-            mainMenu.setAttribute("style","animation: fly-left 1s;");
-            setTimeout( ()=> {
-                mainMenu.removeAttribute("style");
-                mainMenu.classList.add("open");
-            }, 1000);
-
-        }else{
-            mainMenu.classList.remove("open");
-        }
-    }, text: "Click Me", style: "button"}))
-    setInterval( async () =>  await Forecast.update(), 6000);
+    const mainMenu = new Menu({ menuItems: MenuItems, style: "menu" });
+    const menuButton = new Button({ id: "btn_menu", onClick: toggleMenu, text: "Menu", style: "button", affects: menuContainer });
+    menuContainer.appendChild(menuButton);
+    menuContainer.appendChild(mainMenu);
+    root.appendChild(menuContainer);
+    setInterval(async () => await Forecast.update(), 6000);
 }
 
-function testTheMeter(){
+function toggleMenu(menu) {
+    console.log(menu)
+    if (menu.classList.contains("open") === false) {
+        menu.style.animation = "menu-open 1s";
+        menu.classList.add("open");
+        setTimeout(() => {
+            menu.style.animation = null;
+        }, 1000);
+    } else {
+        menu.style.animation = "menu-close 1s";
+        menu.classList.remove("open");
+        setTimeout(() => {
+            menu.style.animation = null;
+        }, 1000);
+    }
+}
+
+function testTheMeter() {
     return Math.floor(Math.random() * 100);
 }
