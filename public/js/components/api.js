@@ -31,7 +31,8 @@ class Weather {
             sky: current.shortForecast,
             rain: current.probabilityOfPrecipitation.value,
             daytime : current.isDaytime,
-            wind: current.windSpeed
+            wind: current.windSpeed,
+            windDirection: current.windDirection
         }
         console.log(this.current);
     }
