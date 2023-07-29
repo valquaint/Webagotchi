@@ -1,0 +1,43 @@
+body {
+    display: flex;
+    justify-content: center;
+}
+viewport {
+    border: 2px solid black;
+    width: 98vw;
+    height: 98vh;
+    max-height: 600px;
+    max-width: 700px;
+    display: flex;
+    overflow: hidden;
+}
+
+.menu { 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.menu > *{ 
+    border: 2px solid green;
+}
+
+#weather {
+    border: 2px solid red;
+    height: 2em;
+    max-width: 150px;
+    width: 30%;
+}
+
+#Stats {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 300px;
+    width: 100%;
+}
+
+#Stats meter {
+    float: right;
+    z-index: 1;
+}
