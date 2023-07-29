@@ -18,6 +18,10 @@ viewport {
     justify-content: flex-start;
 }
 
+.menu .open{
+    left: -100px;
+}
+
 .menu > *{ 
     border: 2px solid green;
 }
@@ -27,6 +31,23 @@ viewport {
     height: 2em;
     max-width: 150px;
     width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#weather label {
+    color: #595959;
+    font-size: 1.98em;
+    vertical-align: top;
+    font-family:monospace;
+    font-weight: 700;
+}
+
+#weather img {
+    aspect-ratio: 1 / 1;
+    width: 1.98em;
+    object-fit: contain;
 }
 
 #Stats {
@@ -40,4 +61,14 @@ viewport {
 #Stats meter {
     float: right;
     z-index: 1;
+}
+
+@keyframes fly-left {
+    0% {
+        transform: translate(0%, 0%);
+    }
+
+    100% { 
+        transform: translate(-100px, 0%);
+    }
 }

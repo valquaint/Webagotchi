@@ -19,7 +19,8 @@ async function initialize(){
         testMenu3,
         testMenu4
     ]
-    root.appendChild(new Menu({menuItems: MenuItems, style:"menu"}))
+    const mainMenu = new Menu({menuItems: MenuItems, style:"menu"});
+    root.appendChild(mainMenu);
     const Geolocation = await new Geolocate();
     console.log(Geolocation)
     const location = Geolocation.getLocation();
@@ -42,6 +43,18 @@ async function initialize(){
     ] 
 
     root.appendChild(new StatPanel({panelItems: [Hunger, Happiness], style:"statpanel"}))
+    root.appendChild(new Button({id:"btn_menu", onClick: () => {
+        if(mainMenu.classList.contains("open")=== false){
+            mainMenu.setAttribute("style","animation: fly-left 1s;");
+            setTimeout( ()=> {
+                mainMenu.removeAttribute("style");
+                mainMenu.classList.add("open");
+            }, 1000);
+
+        }else{
+            mainMenu.classList.remove("open");
+        }
+    }, text: "Click Me", style: "button"}))
     setInterval( async () =>  await Forecast.update(), 6000);
 }
 
