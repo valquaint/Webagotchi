@@ -10,7 +10,8 @@ class Hotspot extends Component {
             })
         }
         this.classList.add("hotspot")
-        this.style.left = location.x;
-        this.style.top = location.y;
+        this.style.left = `${this.location.x}%`;
+        this.style.top = `${this.location.y}%`;
+        return this;
     }
 }

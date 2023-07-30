@@ -53,6 +53,24 @@ async function initialize() {
     menuContainer.appendChild(menuButton);
     menuContainer.appendChild(mainMenu);
     root.appendChild(menuContainer);
+    const Pet = new Webagotchi({happiness: 100,
+        hunger: 0,
+        state: "EGG",
+        image: "body/slime/brown",
+        name:"Tony"});
+    const hotspots_1 = [
+        [23,28, 1],
+        [21,64, 2.8],
+        [64,44, 1.6]
+    ]
+    for(const hotspot of hotspots_1){
+        const loc = {x: hotspot[0], y: hotspot[1]}
+        console.log("===============", loc)
+        root.appendChild(new Hotspot({location: loc}))
+    }
+    root.appendChild(Pet.getHTMLElement())
+    const pick = Math.floor(Math.random() * hotspots_1.length);
+    Pet.moveTo(hotspots_1[pick][0],hotspots_1[pick][1]+3, hotspots_1[pick][2]);
     setInterval(async () => await Forecast.update(), 6000);
 }
 
