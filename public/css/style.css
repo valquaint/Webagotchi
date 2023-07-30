@@ -12,6 +12,7 @@ viewport {
     display: flex;
     overflow: hidden;
     justify-content: space-between;
+    contain: content;
 }
 
 #btn_menu {
@@ -195,4 +196,14 @@ viewport {
 #Stats meter {
     float: right;
     z-index: 1;
+}
+
+background {
+    width: 100%;
+    z-index: -1;
+    float: right;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
 }

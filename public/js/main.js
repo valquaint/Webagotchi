@@ -10,6 +10,9 @@ async function initialize() {
     const location = Geolocation.getLocation();
     console.log(location);
     const Forecast = await new Weather(location);
+
+    const bg = new Background({image: "assets/outside.png"})
+    root.appendChild(bg);
     // console.log(await Forecast.getForecast())
     await Forecast.update();
     const disp_weather = new WeatherDisplay({

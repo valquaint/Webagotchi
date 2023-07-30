@@ -24,7 +24,7 @@ class Component {
         const ele = document.createElement(name);
         ele.id = this.id;
         const style = typeof this.style === "string" ? [this.style] : this.style
-        ele.classList.add(...style);
+        if(this.style) ele.classList.add(...style);
         return ele;
     }
 }
