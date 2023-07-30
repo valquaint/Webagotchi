@@ -11,5 +11,4 @@ Your new virtual friend will be accesible at the link provided in the terminal.
 
 ## Configuration
 
-By default, Webagotchi will try to start on port 4242. This can be changed by either passing the port argument, `-p:` followed by a port number, or by creating a `config.json`  file in the root folder of the project directory.
-
+By default, Webagotchi will try to start on port 5000. This can be changed by either passing the `--port` argument, or `-p`, followed by a port number, or by creating a `config.json`  file in the root folder of the project directory, with the "port" key.
