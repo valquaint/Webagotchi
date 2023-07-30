@@ -106,11 +106,10 @@ viewport {
     border: 2px solid green;
     max-width: 120px;
     min-width: 120px;
+    box-shadow: #595959 2px 2px 5px;
 }
 
 #weather {
-    border: 2px solid rgba(252, 237, 35, 0.445);
-    border-radius: 25px;
     height: 2em;
     max-width: 150px;
     width: 30%;
@@ -118,6 +117,9 @@ viewport {
     align-items: center;
     justify-content: space-evenly;
     background-color: beige;
+    border: 2px solid rgba(252, 237, 35, 0.445);
+    border-radius: 25px;
+    box-shadow: #595959 2px 2px 5px;
 }
 
 #weather label {
@@ -220,6 +222,14 @@ viewport {
 container.statpanel {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    font-family: monospace;
+    background-color: beige;
+    width: 100px;
+    border: 2px solid rgba(252, 237, 35, 0.445);
+    border-radius: 10px;
+    height: 30px;
+    box-shadow: #595959 2px 2px 5px;
 }
 
 #Stats meter {
