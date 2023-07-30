@@ -28,7 +28,7 @@ async function initialize() {
         new Meter({ bindFunction: testTheMeter, id: "bar_happiness", style: ["meter", "happiness"] })
     ]
 
-    root.appendChild(new StatPanel({ panelItems: [Hunger, Happiness], style: "statpanel" }))
+    root.appendChild(new StatPanel({ id: "Stats", panelItems: [Hunger, Happiness], style: "statpanel" }))
     const menuContainer = document.createElement("div");
     menuContainer.classList.add("menucontainer");
     const testMenu1 = document.createElement("div");
@@ -46,7 +46,7 @@ async function initialize() {
         testMenu4
     ]
     const mainMenu = new Menu({ menuItems: MenuItems, style: "menu" });
-    const menuButton = new Button({ id: "btn_menu", onClick: toggleMenu, text: "Menu", style: "button", affects: menuContainer });
+    const menuButton = new Button({ id: "btn_menu", onClick: toggleMenu, text: "circles_ext", style: ["button","material-symbols-outlined"], affects: menuContainer });
     menuContainer.appendChild(menuButton);
     menuContainer.appendChild(mainMenu);
     root.appendChild(menuContainer);
