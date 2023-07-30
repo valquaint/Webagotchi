@@ -1,7 +1,6 @@
-class Button extends Component {
-    onClick;
-    text;
-    affects;
+class Hotspot extends Component {
+    location;
+
     constructor(props){
         super(props);
         if (props) {
@@ -10,9 +9,9 @@ class Button extends Component {
                 console.log(`Setting ${prop} to ${props[prop]}`);
             })
         }
-        this.innerHTML = this.text;
-        this.addEventListener("click", () => {
-            this.onClick(this.affects, this)
-        })
+        this.classList.add("hotspot")
+        this.style.left = `${this.location.x}%`;
+        this.style.top = `${this.location.y}%`;
+        return this;
     }
 }

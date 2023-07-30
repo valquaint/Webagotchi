@@ -10,6 +10,9 @@ async function initialize() {
     const location = Geolocation.getLocation();
     console.log(location);
     const Forecast = await new Weather(location);
+
+    const bg = new Background({image: "assets/outside.png"})
+    root.appendChild(bg);
     // console.log(await Forecast.getForecast())
     await Forecast.update();
     const disp_weather = new WeatherDisplay({
@@ -50,22 +53,47 @@ async function initialize() {
     menuContainer.appendChild(menuButton);
     menuContainer.appendChild(mainMenu);
     root.appendChild(menuContainer);
+    const Pet = new Webagotchi({happiness: 100,
+        hunger: 0,
+        state: "EGG",
+        image: "body/slime/brown",
+        name:"Tony"});
+    const hotspots_1 = [
+        [23,28, 1],
+        [21,64, 2.8],
+        [64,44, 1.6]
+    ]
+    for(const hotspot of hotspots_1){
+        const loc = {x: hotspot[0], y: hotspot[1]}
+        console.log("===============", loc)
+        root.appendChild(new Hotspot({location: loc}))
+    }
+    root.appendChild(Pet.getHTMLElement())
+    const pick = Math.floor(Math.random() * hotspots_1.length);
+    Pet.moveTo(hotspots_1[pick][0],hotspots_1[pick][1]+3, hotspots_1[pick][2]);
     setInterval(async () => await Forecast.update(), 6000);
 }
 
-function toggleMenu(menu) {
+function toggleMenu(menu, button) {
     console.log(menu)
     if (menu.classList.contains("open") === false) {
+        
         menu.style.animation = "menu-open 1s";
         menu.classList.add("open");
+        button.style.animation = "menubutton-open 1s";
+        button.classList.add("open");
         setTimeout(() => {
             menu.style.animation = null;
+            button.style.animation = null;
         }, 1000);
     } else {
         menu.style.animation = "menu-close 1s";
         menu.classList.remove("open");
+        button.style.animation = "menubutton-close 1s";
+        button.classList.remove("open");
         setTimeout(() => {
             menu.style.animation = null;
+            button.style.animation = null;
         }, 1000);
     }
 }
