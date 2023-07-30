@@ -23,19 +23,20 @@ viewport {
     position: relative;
     right: 0px;
     top: 10px;
-    border-left: #f90 solid 2px;
+    /* border-left: #f90 solid 2px;
     border-top: 2px solid #f90;
     border-bottom: 2px solid #f90;
-    border-radius: 25% 0 0 25%;
+    border-radius: 25% 0 0 25%; */
+    border: none;
     padding: 0 0 0 0;
     margin: 0 0 0 0;
     font-size: 1.8em;
     font-weight: 900;
-    background: #aff7f4;
+    background: none;
 }
 
 #btn_menu.open {
-    transform: translate(-120px);
+    transform: rotate(1350deg);
 }
 
 .menucontainer {
@@ -80,6 +81,24 @@ viewport {
 
     100% {
         transform: translate(0%);
+    }
+}
+
+@keyframes menubutton-open { 
+    0% {
+        transform: rotate( 0deg);
+    }
+    100% {
+        transform: rotate(1350deg);
+    }
+}
+
+@keyframes menubutton-close { 
+    0% {
+        transform: rotate( 1350deg);
+    }
+    100% {
+        transform: rotate(0deg);
     }
 }
 

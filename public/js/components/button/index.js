@@ -12,7 +12,7 @@ class Button extends Component {
         }
         this.innerHTML = this.text;
         this.addEventListener("click", () => {
-            this.onClick(this.affects)
+            this.onClick(this.affects, this)
         })
     }
 }

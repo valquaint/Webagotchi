@@ -74,19 +74,26 @@ async function initialize() {
     setInterval(async () => await Forecast.update(), 6000);
 }
 
-function toggleMenu(menu) {
+function toggleMenu(menu, button) {
     console.log(menu)
     if (menu.classList.contains("open") === false) {
+        
         menu.style.animation = "menu-open 1s";
         menu.classList.add("open");
+        button.style.animation = "menubutton-open 1s";
+        button.classList.add("open");
         setTimeout(() => {
             menu.style.animation = null;
+            button.style.animation = null;
         }, 1000);
     } else {
         menu.style.animation = "menu-close 1s";
         menu.classList.remove("open");
+        button.style.animation = "menubutton-close 1s";
+        button.classList.remove("open");
         setTimeout(() => {
             menu.style.animation = null;
+            button.style.animation = null;
         }, 1000);
     }
 }
