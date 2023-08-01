@@ -4,6 +4,8 @@ class Webagotchi {
     state;
     image;
     name;
+    petType;
+    color;
 
     htmlElement;
     children;
@@ -22,7 +24,7 @@ class Webagotchi {
         const ele = document.createElement(name);
         ele.id = "Webagotchi";
         ele.classList.add("webagotchi", this.state.toLowerCase());
-        ele.style.backgroundImage = `url(assets/${this.image}.gif)`;
+        ele.style.backgroundImage = `url(assets/${this.state}/${this.image}.gif)`;
         //ele.style.transform= `translate(-32px)`;
         return ele;
     }
