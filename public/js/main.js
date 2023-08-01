@@ -1,5 +1,5 @@
 let root;
-
+let hotspots_1 = [];
 let Pet;
 document.addEventListener("DOMContentLoaded", initialize);
 
@@ -70,7 +70,7 @@ async function initialize() {
     menuContainer.appendChild(mainMenu);
     root.appendChild(menuContainer);
 
-    const hotspots_1 = [
+    hotspots_1 = [
         [23, 28, 1],
         [21, 64, 2.8],
         [64, 44, 1.6]
@@ -84,7 +84,7 @@ async function initialize() {
     const pick = Math.floor(Math.random() * hotspots_1.length);
     setInterval(async () => await Forecast.update(), 6000);
     const loadData = await Load();
-    if(loadData) Pet = new Webagotchi();
+    if (loadData) Pet = new Webagotchi(loadData);
     console.log(`======`)
     console.log(Pet);
     if (!Pet) begin();
@@ -296,7 +296,15 @@ function tutorial_6() {
         style: ["modal"],
         options: [{
             name: "Ok", action: function () {
-                tutorial_5(name)
+                for (const hotspot of hotspots_1) {
+                    const loc = { x: hotspot[0], y: hotspot[1] }
+                    console.log("===============", loc)
+                    root.appendChild(new Hotspot({ location: loc }))
+                }
+
+                const pick = Math.floor(Math.random() * hotspots_1.length);
+                root.appendChild(Pet.getHTMLElement())
+                Pet.moveTo(hotspots_1[pick][0], hotspots_1[pick][1] + 3, hotspots_1[pick][2]);
             }
         }]
     })
@@ -339,7 +347,7 @@ function showInfo() {
         Color: Pet.color,
         Age: "Work in Progress"
     }
-    for(const val of Object.keys(stats)){
+    for (const val of Object.keys(stats)) {
         const stat = document.createElement("div");
         stat.innerHTML = `${val} : ${stats[val]}`;
         message.appendChild(stat);
