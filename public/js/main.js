@@ -320,11 +320,11 @@ function Load() {
 }
 
 function getHappiness() {
-    return Pet.happiness;
+    return Pet?.happiness || 0;
 }
 
 function getHunger() {
-    return Pet.hunger;
+    return Pet?.hunger || 0;
 }
 
 function showInfo() {
