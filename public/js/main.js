@@ -78,12 +78,17 @@ async function initialize() {
         console.log("===============", loc)
         root.appendChild(new Hotspot({ location: loc }))
     }
-    //root.appendChild(Pet.getHTMLElement())
+    
     const pick = Math.floor(Math.random() * hotspots_1.length);
-    // Pet.moveTo(hotspots_1[pick][0], hotspots_1[pick][1] + 3, hotspots_1[pick][2]);
     setInterval(async () => await Forecast.update(), 6000);
-
-    tutorial_1();
+    Pet = new Webagotchi(await Load());
+    console.log(`======`)
+    console.log(Pet);
+    if(!Pet) begin();
+    else {
+        root.appendChild(Pet.getHTMLElement())
+        Pet.moveTo(hotspots_1[pick][0], hotspots_1[pick][1] + 3, hotspots_1[pick][2]);
+    }
 }
 
 function toggleMenu(menu, button) {
@@ -108,6 +113,22 @@ function toggleMenu(menu, button) {
             button.style.animation = null;
         }, 1000);
     }
+}
+
+function begin(){
+    const message = document.createElement("div");
+    message.classList.add("main");
+    message.innerHTML = "Welcome to Webagotchi! Your online buddy! Take care of your new friend, and raise it from a small egg with limitless potential, to a grown, happy creature you can share!<br /> <br />This game requires some minimal cookies in order to run. None of your personal data is stored, nor shared.";
+    const chld = [message];
+    const mod = new Modal({
+        id: "Begin", children: chld,
+        title: "Cookies and Privacy Notice",
+        style: ["modal"],
+        options: [{
+            name: "Ok", action: tutorial_1
+        }]
+    })
+    root.appendChild(mod.show());
 }
 
 function tutorial_1() {
@@ -228,6 +249,9 @@ function tutorial_5(name) {
         options: [{ name: "Ok", action: tutorial_6 }]
     })
     root.appendChild(mod.show());
+    Pet.hunger = 89;
+    Pet.happiness = 30;
+    Save();
 }
 
 function tutorial_6() {
@@ -252,7 +276,21 @@ function tutorial_6() {
     root.appendChild(mod.show());
 }
 
+function Save(){
+    localStorage.setItem("Webagotchi", JSON.stringify(Pet))
+    // TODO: save player money
+    // TODO: save time value for offline-to-next processing
+}
 
+function Load(){
+    return new Promise((resolve)=> {
+        const loaded = JSON.parse(localStorage.getItem("Webagotchi")) || null
+        // TODO: Load value for player money
+        // TODO: Load value for time offline-to-next
+        // TODO: Process various Webagotchi stats based on offline time
+        resolve(loaded)
+    })
+}
 function testTheMeter() {
     return Math.floor(Math.random() * 100);
 }
