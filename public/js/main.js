@@ -1,6 +1,8 @@
 let root;
 let hotspots_1 = [];
 let Pet;
+let Money;
+let Items;
 document.addEventListener("DOMContentLoaded", initialize);
 
 const PET_TYPES = [
@@ -44,23 +46,27 @@ async function initialize() {
         new Label({ id: "lbl_happiness", text: `Happiness`, style: "happiness", isfor: "bar_happiness" }),
         new Meter({ bindFunction: getHappiness, id: "bar_happiness", style: ["meter", "happiness"] })
     ]
-
-    root.appendChild(new StatPanel({ id: "Stats", panelItems: [Hunger, Happiness], style: "statpanel" }))
+    const moneyMeter = [
+        new Label({ id: "lbl_Money", text: `Money`, style: "money", isfor: "count_money" }),
+        new Label({ id: "ctn_money", style: ["counter"], updater: updateMoney })
+    ]
+    root.appendChild(new StatPanel({ id: "Stats", panelItems: [Hunger, Happiness, moneyMeter], style: "statpanel" }))
     const menuContainer = document.createElement("div");
     menuContainer.classList.add("menucontainer");
     const mnuInfo = document.createElement("button");
     mnuInfo.classList.add("menu", "info")
     mnuInfo.addEventListener("click", showInfo);
-    const testMenu2 = document.createElement("div");
+    const mnuShop = document.createElement("div");
+    mnuShop.addEventListener("click", showShop);
     const testMenu3 = document.createElement("div");
     const testMenu4 = document.createElement("div");
     mnuInfo.innerHTML = "Info";
-    testMenu2.innerHTML = "Test Menu Item";
+    mnuShop.innerHTML = "Shop";
     testMenu3.innerHTML = "Test Menu Item";
     testMenu4.innerHTML = "Test Menu Item";
     const MenuItems = [
         mnuInfo,
-        testMenu2,
+        mnuShop,
         testMenu3,
         testMenu4
     ]
@@ -116,6 +122,10 @@ async function initialize() {
     ]
     const toolbox = new Toolbox({ id: "Toolbox", tools: tools, style: "toolbox" });
     root.appendChild(toolbox);
+}
+
+function updateMoney() {
+    return Money;
 }
 
 function toggleMenu(menu, button) {
@@ -312,15 +322,18 @@ function tutorial_6() {
 }
 
 function Save() {
-    localStorage.setItem("Webagotchi", JSON.stringify(Pet))
-    // TODO: save player money
+    localStorage.setItem("Webagotchi", JSON.stringify(Pet));
+    localStorage.setItem("Money", Money.toString());
+    //console.log(Items);
+    localStorage.setItem("Items", JSON.stringify(Items));
     // TODO: save time value for offline-to-next processing
 }
 
 function Load() {
     return new Promise((resolve) => {
         const loaded = JSON.parse(localStorage.getItem("Webagotchi")) || null
-        // TODO: Load value for player money
+        Money = parseInt(localStorage.getItem("Money") || "0") || 0
+        Items = JSON.parse(localStorage.getItem("Items")) || [];
         // TODO: Load value for time offline-to-next
         // TODO: Process various Webagotchi stats based on offline time
         resolve(loaded)
@@ -357,8 +370,8 @@ function showInfo() {
     message.style.alignItems = "center";
     const chld = [message];
     const mod = new Modal({
-        id: "careDialog", children: chld,
-        title: "Care",
+        id: "infoDialog", children: chld,
+        title: "Info",
         style: ["modal"],
         options: [{
             name: "Ok", action: () => {
@@ -369,18 +382,171 @@ function showInfo() {
     root.appendChild(mod.show());
 }
 
+function showShop() {
+    const message = document.createElement("div");
+    message.classList.add("main");
+    message.innerHTML = `Shop`;
+    const shop = [
+        new item({
+            category: "food",
+            cost: 10,
+            name: "Celery",
+            gives: {
+                hunger: -10,
+                happiness: 15
+            },
+            style: "shopItem"
+        }),
+        new item({
+            category: "food",
+            cost: 20,
+            name: "Peach",
+            gives: {
+                hunger: -20,
+                happiness: 30
+            },
+            style: "shopItem"
+        }),
+        new item({
+            category: "food",
+            cost: 40,
+            name: "Sandwich",
+            gives: {
+                hunger: -40,
+                happiness: 60
+            },
+            style: "shopItem"
+        }),
+        new item({
+            category: "food",
+            cost: 10,
+            name: "Goldfruit",
+            gives: {
+                hunger: -80,
+                happiness: 80
+            },
+            style: "shopItem"
+        }),
+        new item({
+            category: "toy",
+            cost: 20,
+            name: "Blocks",
+            gives: {
+                hunger: 15,
+                happiness: 30
+            },
+            style: "shopItem"
+        }),
+        new item({
+            category: "toy",
+            cost: 50,
+            name: "Sandbox",
+            gives: {
+                hunger: 25,
+                happiness: 50
+            },
+            style: "shopItem"
+        }),
+        new item({
+            category: "toy",
+            cost: 80,
+            name: "Horseshoes",
+            gives: {
+                hunger: 40,
+                happiness: 80
+            },
+            style: "shopItem"
+        }),
+        new item({
+            category: "adventure",
+            cost: 120,
+            name: "LaserTag",
+            gives: {
+                hunger: 10,
+                happiness: 20
+            },
+            style: "shopItem"
+        }),
+        new item({
+            category: "book",
+            cost: 60,
+            name: "The Count() of Coffee Python",
+            gives: {
+                hunger: 10,
+                happiness: 10
+            },
+            style: "shopBook"
+        }),
+        new item({
+            category: "book",
+            cost: 70,
+            name: "The DaVinci Program",
+            gives: {
+                hunger: 10,
+                happiness: 10
+            },
+            style: "shopBook"
+        }),
+        new item({
+            category: "book",
+            cost: 120,
+            name: "How to Talk To Your Webagotchi about Nuclear Fission",
+            gives: {
+                hunger: 10,
+                happiness: 10
+            },
+            style: "shopBook"
+        })
+    ]
+    const prod = document.createElement("div");
+    for (const itm of shop) {
+        itm.htmlElement.addEventListener("click", buy.bind(this, itm));
+        prod.appendChild(itm.htmlElement)
+    }
+    prod.classList.add("shopWindow")
+    message.appendChild(prod);
+    prod.style.display = "flex";
+    prod.style.flexDirection = "row";
+    const chld = [message];
+    const mod = new Modal({
+        id: "shopDialog", children: chld,
+        title: "Shop",
+        style: ["modal"],
+        options: [{
+            name: "Ok", action: () => {
+                return
+            }
+        }]
+    })
+    root.appendChild(mod.show());
+}
+
+function buy(itm) {
+    console.log(itm)
+    if (Money >= itm.cost) {
+        Money -= itm.cost;
+        Items.push(new item(itm));
+        Save();
+    }
+}
+
 function Wash() {
     const message = document.createElement("div");
     message.classList.add("main");
     message.innerHTML = `You wash ${Pet.name}:`;
     const happinessGain = Math.floor(Math.random() * 8);
+    const moneyGain = Math.floor(Math.random() * 13);
     Pet.happiness += happinessGain;
+    Money += moneyGain;
     if (Pet.happiness > 100) Pet.happiness = 100;
     const gainP = document.createElement("p");
     gainP.innerHTML = `${Pet.name} gained ${happinessGain} happiness.`
+    const gainM = document.createElement("p");
+    gainM.innerHTML = `You gained ${moneyGain} money.`
     const result = document.createElement("p");
     result.innerHTML = `${Pet.name}'s happiness is now ${Pet.happiness}!`
     message.appendChild(gainP);
+    message.appendChild(gainM);
     message.appendChild(result);
     const chld = [message];
     const mod = new Modal({
@@ -397,23 +563,41 @@ function Wash() {
 function Feed() {
     const message = document.createElement("div");
     message.classList.add("main");
-    message.innerHTML = `You feed ${Pet.name}:`;
-    const happinessGain = Math.floor(Math.random() * 6);
-    // TODO: Make based on quality of food selected
-    const hungerLoss = Math.floor(Math.random() * 20);
-    Pet.happiness += happinessGain;
-    Pet.hunger -= hungerLoss
-    if (Pet.happiness > 100) Pet.happiness = 100;
-    if (Pet.hunger < 0) Pet.hunger = 0;
-    const gainP = document.createElement("p");
-    gainP.innerHTML = `${Pet.name} gained ${happinessGain} happiness.`
-    const lossP = document.createElement("p");
-    lossP.innerHTML = `${Pet.name} lost ${hungerLoss} hunger.`
-    const result = document.createElement("p");
-    result.innerHTML = `${Pet.name}'s happiness is now ${Pet.happiness}, and their hunger is now ${Pet.hunger}!`
-    message.appendChild(gainP);
-    message.appendChild(lossP);
-    message.appendChild(result);
+    const options = [];
+    for (const itm of Items) {
+        if (itm.category === "food") {
+            options.push(itm)
+        }
+    }
+    console.log(options)
+    const pick = Math.floor(Math.random() * options.length)
+    console.log(pick)
+    const food = options[pick] || null;
+    console.log(food)
+    if (food) {
+        message.innerHTML = `You feed ${Pet.name} the ${food.name}:`;
+        const happinessGain = Math.floor(Math.random() * food.gives.happiness);
+        // TODO: Make based on quality of food selected
+        const hungerLoss = Math.floor(Math.random() * food.gives.hunger);
+        Pet.happiness += happinessGain;
+        Pet.hunger += hungerLoss
+        if (Pet.happiness > 100) Pet.happiness = 100;
+        if (Pet.hunger < 0) Pet.hunger = 0;
+        const gainP = document.createElement("p");
+        gainP.innerHTML = `${Pet.name} gained ${happinessGain} happiness.`
+        const lossP = document.createElement("p");
+        lossP.innerHTML = `${Pet.name} changed by ${hungerLoss} hunger.`
+        const result = document.createElement("p");
+        result.innerHTML = `${Pet.name}'s happiness is now ${Pet.happiness}, and their hunger is now ${Pet.hunger}!`
+        message.appendChild(gainP);
+        message.appendChild(lossP);
+        message.appendChild(result);
+        const rem = Items.indexOf(food);
+        Items.splice(rem, 1);
+        Save();
+    } else {
+        message.innerHTML = `You don't have any food to feed ${Pet.name}!`;
+    }
     const chld = [message];
     const mod = new Modal({
         id: "careDialog", children: chld,
@@ -429,23 +613,40 @@ function Feed() {
 function Play() {
     const message = document.createElement("div");
     message.classList.add("main");
-    message.innerHTML = `You play with ${Pet.name}:`;
-    const happinessGain = Math.floor(Math.random() * 20);
-    // TODO: Make based on activity selected
-    const hungerGain = Math.floor(Math.random() * 20);
-    Pet.happiness += happinessGain;
-    Pet.hunger += hungerGain
-    if (Pet.happiness > 100) Pet.happiness = 100;
-    if (Pet.hunger > 100) Pet.hunger = 100;
-    const gainP = document.createElement("p");
-    gainP.innerHTML = `${Pet.name} gained ${happinessGain} happiness.`
-    const hungerP = document.createElement("p");
-    hungerP.innerHTML = `${Pet.name} gained ${hungerGain} hunger.`
-    const result = document.createElement("p");
-    result.innerHTML = `${Pet.name}'s happiness is now ${Pet.happiness}, and their hunger is now ${Pet.hunger}!`
-    message.appendChild(gainP);
-    message.appendChild(hungerP);
-    message.appendChild(result);
+    const options = [];
+    for (const itm of Items) {
+        if (itm.category === "toy") {
+            options.push(itm)
+        }
+    }
+    console.log(options)
+    const pick = Math.floor(Math.random() * options.length)
+    console.log(pick)
+    const toy = options[pick] || null;
+    console.log(toy)
+    if (toy) {
+        message.innerHTML = `You and ${Pet.name} play with the ${toy.name}:`;
+        const happinessGain = Math.floor(Math.random() * toy.gives.happiness);
+        const hungerGain = Math.floor(Math.random() * toy.gives.hunger);
+        Pet.happiness += happinessGain;
+        Pet.hunger += hungerGain
+        if (Pet.happiness > 100) Pet.happiness = 100;
+        if (Pet.hunger > 100) Pet.hunger = 100;
+        const gainP = document.createElement("p");
+        gainP.innerHTML = `${Pet.name} gained ${happinessGain} happiness.`
+        const hungerP = document.createElement("p");
+        hungerP.innerHTML = `${Pet.name} changed by  ${hungerGain} hunger.`
+        const result = document.createElement("p");
+        result.innerHTML = `${Pet.name}'s happiness is now ${Pet.happiness}, and their hunger is now ${Pet.hunger}!`
+        message.appendChild(gainP);
+        message.appendChild(hungerP);
+        message.appendChild(result);
+        const rem = Items.indexOf(toy);
+        Items.splice(rem, 1);
+        Save();
+    } else {
+        message.innerHTML = `You don't have any to use to play with ${Pet.name}!`;
+    }
     const chld = [message];
     const mod = new Modal({
         id: "careDialog", children: chld,
@@ -461,23 +662,40 @@ function Play() {
 function Read() {
     const message = document.createElement("div");
     message.classList.add("main");
-    message.innerHTML = `You read to ${Pet.name}:`;
-    // TODO: Make based on book selected
-    const happinessGain = Math.floor(Math.random() * 20);
-    const hungerGain = Math.floor(Math.random() * 8);
-    Pet.happiness += happinessGain;
-    Pet.hunger += hungerGain
-    if (Pet.happiness > 100) Pet.happiness = 100;
-    if (Pet.hunger > 100) Pet.hunger = 100;
-    const gainP = document.createElement("p");
-    gainP.innerHTML = `${Pet.name} gained ${happinessGain} happiness.`
-    const hungerP = document.createElement("p");
-    hungerP.innerHTML = `${Pet.name} gained ${hungerGain} hunger.`
-    const result = document.createElement("p");
-    result.innerHTML = `${Pet.name}'s happiness is now ${Pet.happiness}, and their hunger is now ${Pet.hunger}!`
-    message.appendChild(gainP);
-    message.appendChild(hungerP);
-    message.appendChild(result);
+    const options = [];
+    for (const itm of Items) {
+        if (itm.category === "book") {
+            options.push(itm)
+        }
+    }
+    console.log(options)
+    const pick = Math.floor(Math.random() * options.length)
+    console.log(pick)
+    const book = options[pick] || null;
+    console.log(book)
+    if (book) {
+        message.innerHTML = `You read ${book.name} to ${Pet.name}:`;
+        const happinessGain = Math.floor(Math.random() * book.gains.happiness);
+        const hungerGain = Math.floor(Math.random() * book.gains.hunger);
+        Pet.happiness += happinessGain;
+        Pet.hunger += hungerGain
+        if (Pet.happiness > 100) Pet.happiness = 100;
+        if (Pet.hunger > 100) Pet.hunger = 100;
+        const gainP = document.createElement("p");
+        gainP.innerHTML = `${Pet.name} gained ${happinessGain} happiness.`
+        const hungerP = document.createElement("p");
+        hungerP.innerHTML = `${Pet.name} hunger changed by ${hungerGain} hunger.`
+        const result = document.createElement("p");
+        result.innerHTML = `${Pet.name}'s happiness is now ${Pet.happiness}, and their hunger is now ${Pet.hunger}!`
+        message.appendChild(gainP);
+        message.appendChild(hungerP);
+        message.appendChild(result);
+        const rem = Items.indexOf(book);
+        Items.splice(rem, 1);
+        Save();
+    }else{
+        message.innerHTML = `You don't have any books to read ${Pet.name}!`
+    }
     const chld = [message];
     const mod = new Modal({
         id: "careDialog", children: chld,

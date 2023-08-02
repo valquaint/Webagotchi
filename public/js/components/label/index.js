@@ -1,6 +1,7 @@
 class Label extends Component {
     text;
     isfor;
+    updater;
     constructor(props){
         super(props);
         if (props) {
@@ -10,6 +11,12 @@ class Label extends Component {
             })
         }
         if(this.isfor) this.setAttribute("for", this.isfor);
+        
         this.innerHTML = this.text;
+        if(props.updater){
+            setInterval(() => {
+                this.innerHTML = props.updater()
+            }, 1000);
+        }
     }
 }
