@@ -113,7 +113,7 @@ viewport {
     height: 100%;
     background: #888888aa;
     position: absolute;
-    z-index: 9;
+    z-index: 80;
 }
 .modal {
     display: flex;
@@ -379,4 +379,18 @@ toolbox {
 .tool:focus{
     border: 4px #ff9575;
     box-shadow: inset 0px 0px 7px 2px #ff0800;
+}
+
+.shopItem {
+    width: 56px;
+    aspect-ratio: 1 / 1;
+}
+
+.shopBook {
+    width: 200px;
+}
+
+.shopWindow {
+    width: 516px;
+    flex-wrap: wrap;
 }
